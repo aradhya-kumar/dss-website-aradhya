@@ -6,7 +6,7 @@ import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 import FluidContourBackground from '@/components/ui/fluid-contour-background';
 
 // Target event date: 17 September 2026, 18:00 IST
-const TARGET_DATE = new Date('2026-09-17T18:00:00+05:30').getTime();
+const TARGET_DATE = new Date('2026-09-17T18:45:00+05:30').getTime();
 
 export default function HoverBorderGradientDemo() {
     const [timeLeft, setTimeLeft] = useState<{
@@ -90,7 +90,7 @@ export default function HoverBorderGradientDemo() {
 
                 {/* ── QUOTED DATE BADGE ── */}
                 <p className='text-neutral-100 font-bold text-center text-base sm:text-lg md:text-2xl mb-12 font-sans tracking-wide'>
-                    &quot;17th September 2026 • 6:00 PM • P-LH 101&quot;
+                    &quot;17th September 2026 • 6:45 PM • P-LH 101&quot;
                 </p>
 
                 {/* ── GLASSMORPHISM COUNTDOWN TIMER ── */}
