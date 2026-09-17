@@ -104,7 +104,7 @@ const currentTenureMembers: BoardMember[] = [
   {
     name: "Ashrith Jangam",
     role: "Head of Media Department",
-    image: `${CURRENT_IMAGE_PATH}/Ashirth.jpg`,
+    image: `${CURRENT_IMAGE_PATH}/Ashrith.jpg`,
   },
   {
     name: "Naqi Haider Rizvi",
@@ -124,12 +124,12 @@ const currentTenureMembers: BoardMember[] = [
   {
     name: "Vaibhavi Singh",
     role: "Sub-Head of Design Department",
-    image: `${CURRENT_IMAGE_PATH}/Vaibhavi.jpg`,
+    image: `${CURRENT_IMAGE_PATH}/Vaibhani.jpg`,
   },
   {
     name: "Bindan M",
     role: "Head of Public Relations and Outreach Department",
-    image: `${CURRENT_IMAGE_PATH}/Bindan.jpg`,
+    image: `${CURRENT_IMAGE_PATH}/Bindhan.jpg`,
   },
   {
     name: "Ritika Khatri",
