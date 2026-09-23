@@ -30,7 +30,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html lang="en" className="dark">
         <Head>
           <link rel="icon" href="/DSS_Logo.png" type="image/png" />
         </Head>

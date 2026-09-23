@@ -11,10 +11,13 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
   background-color: black;
+  color: white;
+  overflow-x: hidden;
 }
 
 .font-suse-mono {

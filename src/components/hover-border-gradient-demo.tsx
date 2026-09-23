@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 import FluidContourBackground from '@/components/ui/fluid-contour-background';
 
-// Target event date: 17 September 2026, 18:00 IST
-const TARGET_DATE = new Date('2026-09-17T18:45:00+05:30').getTime();
+// Target recruitment deadline: 25 September 2026, 11:59 PM IST
+const TARGET_DATE = new Date('2026-09-25T23:59:59+05:30').getTime();
 
 export default function HoverBorderGradientDemo() {
     const [timeLeft, setTimeLeft] = useState<{
@@ -63,34 +63,36 @@ export default function HoverBorderGradientDemo() {
                         duration={1.5}
                     >
                         <span className='bg-clip-text text-transparent bg-gradient-to-b from-white via-neutral-100 to-neutral-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]'>
-                            Upcoming Event
+                            RECRUITMENT OPEN
                         </span>
                     </HoverBorderGradient>
                 </div>
 
                 {/* ── TECHNOVA-STYLE TITLE WITH WHITE DSS SVG ── */}
-                <div className='flex items-center justify-center gap-3 sm:gap-5 md:gap-6 flex-wrap mb-6'>
-                    <Image
-                        src='/Assets/DSS_Logo_White.svg'
-                        alt='DSS Logo'
-                        width={288}
-                        height={95}
-                        priority
-                        className='h-9 sm:h-14 md:h-18 lg:h-22 w-auto object-contain translate-y-1'
-                    />
-                    <h1 className='text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase text-neutral-100 tracking-wider font-sans text-center'>
-                        UNLOCKED
+                <div className='flex flex-col items-center justify-center gap-4 sm:gap-6 mb-6'>
+                    <div className='flex justify-center'>
+                        <Image
+                            src='/Assets/DSS_Logo_White.svg'
+                            alt='DSS Logo'
+                            width={288}
+                            height={95}
+                            priority
+                            className='h-9 sm:h-14 md:h-18 lg:h-22 w-auto object-contain'
+                        />
+                    </div>
+                    <h1 className='text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-neutral-100 tracking-wider font-sans text-center'>
+                        JUNIOR CORE FORMS OUT
                     </h1>
                 </div>
 
                 {/* ── ITALIC QUOTED TAGLINE ── */}
                 <p className='text-neutral-300 italic font-poppins text-center text-sm sm:text-base md:text-xl max-w-3xl mx-auto mb-5 leading-relaxed px-2'>
-                    &quot;Ignite Your Passion for Innovation: Join Us for a Spectacular Fusion of Technology and Talent!&quot;
+                    &quot;Ready to Build, Lead, and Innovate? Apply for the DSS Junior Core Team.&quot;
                 </p>
 
                 {/* ── QUOTED DATE BADGE ── */}
                 <p className='text-neutral-100 font-bold text-center text-base sm:text-lg md:text-2xl mb-12 font-sans tracking-wide'>
-                    &quot;17th September 2026 • 6:45 PM • P-LH 101&quot;
+                    &quot;Deadline : 25th September 2026&quot;
                 </p>
 
                 {/* ── GLASSMORPHISM COUNTDOWN TIMER ── */}
@@ -139,12 +141,12 @@ export default function HoverBorderGradientDemo() {
                 {/* ── EVENT DESCRIPTION & REGISTER CTA ── */}
                 <div className='max-w-3xl mx-auto text-center mb-16'>
                     <p className='text-neutral-400 text-sm sm:text-base md:text-lg leading-relaxed mb-8 font-poppins'>
-                        DSS Unlocked is an interactive orientation experience that takes juniors behind the scenes of the Data Science Society. From AI, Data Science, and emerging technologies to our teams, exciting events, real-world projects, and opportunities — step in, get involved, and discover what you can build with DSS!
+                        Applications for the DSS Junior Core Team are now open! This is your opportunity to organize events, contribute to technical initiatives, collaborate with passionate peers, and play an active role in growing the Data Science Society. Join us and be part of the team driving innovation at DSS.
                     </p>
 
                     <div className='flex justify-center text-center'>
                         <a
-                            href='https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=9NpbLPKP2Uu9VHxQqyGVkEfWOvGjyq5HiO99rdTV-I9UOUE4N0ZOVjlDMFVLRkJPVFVTSkZIOUFDWi4u'
+                            href='https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=9NpbLPKP2Uu9VHxQqyGVkPRDgAMwYExAssH82f4j-49UNkJCUlI4TVg2WlJRSTFMMlZYTTBFWU43WS4u'
                             target='_blank'
                             rel='noopener noreferrer'
                         >
@@ -153,7 +155,7 @@ export default function HoverBorderGradientDemo() {
                                 className='dark:bg-black bg-white text-black dark:text-white flex cursor-pointer items-center space-x-2 px-6 py-2.5 text-base font-semibold'
                             >
                                 <AceternityLogo />
-                                <span>Register Now!</span>
+                                <span>Apply Now</span>
                             </HoverBorderGradient>
                         </a>
                     </div>
