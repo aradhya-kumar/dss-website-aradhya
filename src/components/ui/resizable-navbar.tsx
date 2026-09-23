@@ -30,7 +30,8 @@ interface NavItemsProps {
     link: string;
   }[];
   className?: string;
-  onItemClick?: () => void;
+  onItemClick?: (link?: string) => void;
+  activeSection?: string;
 }
 
 interface MobileNavProps {
@@ -69,8 +70,8 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   return (
     <motion.div
       ref={ref}
-      // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
-      className={cn("fixed inset-x-0 top-5 z-50 w-full", className)}
+      // Fixed at top with high z-index
+      className={cn("fixed inset-x-0 top-5 z-50 w-full px-4", className)}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
@@ -88,24 +89,24 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   return (
     <motion.div
       animate={{
-        backdropFilter: visible ? "blur(10px)" : "none",
+        backdropFilter: visible ? "blur(16px)" : "blur(8px)",
         boxShadow: visible
-          ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
-          : "none",
-        width: visible ? "40%" : "100%",
-        y: visible ? 20 : 0,
+          ? "0 0 24px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(255, 255, 255, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 16px 68px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
+          : "0 0 0 1px rgba(255, 255, 255, 0.05)",
+        width: visible ? "46%" : "100%",
+        y: visible ? 10 : 0,
       }}
       transition={{
         type: "spring",
-        stiffness: 200,
-        damping: 50,
+        stiffness: 220,
+        damping: 40,
       }}
       style={{
-        minWidth: "800px",
+        minWidth: "750px",
       }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
-        visible && "bg-white/80 dark:bg-neutral-950/80",
+        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full border border-white/10 bg-neutral-950/70 px-4 py-2.5 lg:flex backdrop-blur-md",
+        visible && "bg-neutral-950/85 border-white/15",
         className,
       )}
     >
@@ -114,34 +115,71 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   );
 };
 
-export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
+export const NavItems = ({ items, className, onItemClick, activeSection }: NavItemsProps) => {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
     <motion.div
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
+        "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-1 text-sm font-medium transition duration-200 lg:flex",
         className,
       )}
     >
-      {items.map((item, idx) => (
-        <a
-          onMouseEnter={() => setHovered(idx)}
-          onClick={onItemClick}
-          className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300"
-          key={`link-${idx}`}
-          href={item.link}
-        >
-          {hovered === idx && (
-            <motion.div
-              layoutId="hovered"
-              className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
-            />
-          )}
-          <span className="relative z-20">{item.name}</span>
-        </a>
-      ))}
+      {items.map((item, idx) => {
+        const isActive = activeSection ? item.link === `#${activeSection}` || (activeSection === "home" && item.link === "#home") : false;
+        return (
+          <a
+            key={`link-${idx}`}
+            href={item.link}
+            onMouseEnter={() => setHovered(idx)}
+            onClick={(e) => {
+              if (item.link.startsWith("#")) {
+                e.preventDefault();
+                const targetId = item.link.replace("#", "");
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                  const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                  const offsetPosition = elementPosition - 80;
+                  window.scrollTo({
+                    top: Math.max(0, offsetPosition),
+                    behavior: "smooth",
+                  });
+                  if (window.history.pushState) {
+                    window.history.pushState(null, "", item.link);
+                  }
+                }
+              }
+              onItemClick?.(item.link);
+            }}
+            className={cn(
+              "relative px-4 py-1.5 text-sm transition-colors duration-200 rounded-full",
+              isActive
+                ? "text-white font-semibold"
+                : "text-neutral-400 hover:text-white"
+            )}
+          >
+            {isActive && (
+              <motion.div
+                layoutId="activeSectionIndicator"
+                className="absolute inset-0 h-full w-full rounded-full bg-white/10 border border-white/15 shadow-[0_0_12px_rgba(255,255,255,0.08)]"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              />
+            )}
+            {hovered === idx && !isActive && (
+              <motion.div
+                layoutId="hovered"
+                className="absolute inset-0 h-full w-full rounded-full bg-white/5"
+                transition={{ type: "spring", stiffness: 400, damping: 35 }}
+              />
+            )}
+            <span className="relative z-20 flex items-center gap-1.5">
+              {isActive && <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />}
+              {item.name}
+            </span>
+          </a>
+        );
+      })}
     </motion.div>
   );
 };
@@ -230,11 +268,19 @@ export const MobileNavToggle = ({
   );
 };
 
-export const NavbarLogo = () => {
+export const NavbarLogo = ({ onClick }: { onClick?: () => void }) => {
   return (
-    <Link
-      href="/"
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
+    <a
+      href="#home"
+      onClick={(e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (window.history.pushState) {
+          window.history.pushState(null, "", "#home");
+        }
+        onClick?.();
+      }}
+      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-white cursor-pointer"
     >
       <Image
         src="/DSS_Logo.png"
@@ -242,8 +288,8 @@ export const NavbarLogo = () => {
         width={30}
         height={30}
       />
-      <span className="font-medium text-black dark:text-white">Data Science Society</span>
-    </Link>
+      <span className="font-medium text-white">Data Science Society</span>
+    </a>
   );
 };
 
