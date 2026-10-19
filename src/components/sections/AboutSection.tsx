@@ -9,7 +9,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative w-full py-16 md:py-28 px-4 sm:px-6 lg:px-8 bg-black scroll-mt-20 overflow-hidden"
+      className="relative w-full pt-8 pb-16 md:pt-12 md:pb-24 px-4 sm:px-6 lg:px-8 bg-black scroll-mt-20 overflow-hidden"
     >
       {/* Subtle ambient lighting */}
       <div

@@ -58,7 +58,7 @@ const currentTenureMembers: BoardMember[] = [
   {
     name: 'Surya Pratap Singh',
     role: 'Head of Technical Department',
-    image: `${CURRENT_IMAGE_PATH}/Surya.jpg`,
+    image: `${CURRENT_IMAGE_PATH}/Surya.png`,
   },
   {
     name: 'Mayank Sharma',

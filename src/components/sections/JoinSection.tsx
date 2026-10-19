@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Loader2, ArrowUpRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import {
   IconBrandWhatsapp,
   IconBrandGithub,
@@ -11,56 +11,6 @@ import {
 } from '@tabler/icons-react';
 
 export default function JoinSection() {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    setSuccessMessage('');
-
-    let processedEmail = email.trim().toLowerCase();
-    if (processedEmail.endsWith('.')) {
-      processedEmail = processedEmail.slice(0, -1);
-    }
-
-    if (!processedEmail.endsWith('@bennett.edu.in')) {
-      setError('Only Bennett University emails (@bennett.edu.in) are eligible for core recruitment.');
-      setTimeout(() => setError(''), 4000);
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: processedEmail }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || 'An error occurred while signing up.');
-        setTimeout(() => setError(''), 4000);
-      } else {
-        setSuccessMessage(data.message || "You've been successfully added to the core recruitment waitlist!");
-        setTimeout(() => setSuccessMessage(''), 5000);
-        setEmail('');
-      }
-    } catch {
-      setError('Network error. Please try again later.');
-      setTimeout(() => setError(''), 4000);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <section
       id="join"
@@ -97,7 +47,7 @@ export default function JoinSection() {
           </span>
         </div>
 
-        {/* Dual Cards: WhatsApp Community & Core Team Waitlist */}
+        {/* Dual Cards: WhatsApp Community & Instagram Community */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           {/* Card 1: WhatsApp Community */}
           <motion.div
@@ -127,7 +77,7 @@ export default function JoinSection() {
 
             <div className="relative z-10 pt-4">
               <a
-                href="https://chat.whatsapp.com/IsCjZeJi5lS6hP95reUnqu?mode=gi_t"
+                href="https://chat.whatsapp.com/Ebo9Z95cFwR3gltM2LwX2u?s=cl&p=i&mlu=4&ilr=4"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 w-full py-4 px-6 rounded-2xl bg-white text-black font-poppins font-bold text-sm sm:text-base hover:bg-neutral-200 transition-all duration-200 shadow-lg hover:shadow-white/20 hover:scale-[1.02] active:scale-[0.98]"
@@ -175,7 +125,7 @@ export default function JoinSection() {
             </div>
           </motion.div>
 
-          {/* Card 2: Core Members Waitlist */}
+          {/* Card 2: DSS Instagram Card */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -184,77 +134,49 @@ export default function JoinSection() {
             className="flex flex-col justify-between p-8 rounded-3xl border border-white/10 bg-gradient-to-b from-neutral-900/80 to-neutral-950/80 backdrop-blur-xl shadow-2xl relative overflow-hidden group hover:border-white/25 transition-all duration-300"
           >
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-suse-mono uppercase tracking-wider mb-6">
-                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                Recruitment 2026-27
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-xs font-suse-mono uppercase tracking-wider mb-6">
+                <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                FOLLOW DSS
               </div>
 
               <h3 className="font-poppins text-3xl sm:text-4xl font-black text-white leading-tight mb-4">
-                Core Team <br />
+                Stay Connected with <br />
                 <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                  Priority Waitlist.
+                  DSS.
                 </span>
               </h3>
 
               <p className="font-poppins text-sm md:text-base text-neutral-400 leading-relaxed mb-6">
-                Looking to build high-impact projects, manage massive university events, or lead AI research? Drop your BU email to get notified the second applications open.
+                Follow @dss_bu on Instagram for the latest updates on upcoming events, hackathons, workshops, recruitment announcements, and exciting opportunities at the Data Science Society, Bennett University.
               </p>
             </div>
 
-            <div className="relative z-10 pt-2">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    type="email"
-                    placeholder="enrollment@bennett.edu.in"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    maxLength={50}
-                    required
-                    className="w-full px-4 py-3.5 rounded-2xl bg-neutral-950/90 border border-neutral-800 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-poppins"
-                  />
-                  <button
-                    type="submit"
-                    disabled={isLoading || !email.trim()}
-                    className="px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-poppins font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer shadow-lg hover:shadow-blue-500/20"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Sending...</span>
-                      </>
-                    ) : (
-                      <span>Join Waitlist</span>
-                    )}
-                  </button>
-                </div>
+            <div className="relative z-10 pt-4">
+              <a
+                href="https://www.instagram.com/dss_bu?exln=MWVtNGloMWEyNXp5MQ=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 w-full py-4 px-6 rounded-2xl bg-white text-black font-poppins font-bold text-sm sm:text-base hover:bg-neutral-200 transition-all duration-200 shadow-lg hover:shadow-white/20 hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <IconBrandInstagram className="w-5 h-5 text-purple-600" />
+                <span>Follow Us on Instagram</span>
+                <ArrowUpRight className="w-4 h-4 ml-auto" />
+              </a>
 
-                {error && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 text-red-400 text-xs mt-1"
-                  >
-                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                    <span>{error}</span>
-                  </motion.div>
-                )}
-
-                {successMessage && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 text-emerald-400 text-xs mt-1"
-                  >
-                    <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-                    <span>{successMessage}</span>
-                  </motion.div>
-                )}
-              </form>
-
-              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-neutral-500 text-xs font-suse-mono">
-                <span>Exclusive to Bennett University students</span>
-                <span>Verified @bennett.edu.in</span>
+              {/* Instagram Handle Info Bar */}
+              <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/10 text-neutral-400">
+                <span className="font-suse-mono text-xs uppercase tracking-wider text-neutral-500">
+                  Instagram Handle:
+                </span>
+                <a
+                  href="https://www.instagram.com/dss_bu?exln=MWVtNGloMWEyNXp5MQ=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-suse-mono text-xs font-semibold text-white hover:text-purple-400 transition-colors flex items-center gap-1.5"
+                >
+                  <IconBrandInstagram className="w-4 h-4 text-purple-400" />
+                  <span>@dss_bu</span>
+                </a>
               </div>
             </div>
           </motion.div>
