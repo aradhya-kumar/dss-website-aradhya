@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
 import FluidContourBackground from '@/components/ui/fluid-contour-background';
 
-// Target recruitment deadline: 25 September 2026, 11:59 PM IST
-const TARGET_DATE = new Date('2026-09-25T23:59:59+05:30').getTime();
+// Target countdown deadline: 26 October 2026, 11:59:59 PM IST
+const TARGET_DATE = new Date('2026-10-26T23:59:59+05:30').getTime();
 
 export default function HoverBorderGradientDemo() {
     const [timeLeft, setTimeLeft] = useState<{
@@ -17,35 +17,41 @@ export default function HoverBorderGradientDemo() {
     } | null>(null);
 
     useEffect(() => {
-        const updateCountdown = () => {
-            const now = new Date().getTime();
-            const difference = TARGET_DATE - now;
+        let interval: NodeJS.Timeout | null = null;
 
-            if (difference > 0) {
-                setTimeLeft({
-                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                    minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-                    seconds: Math.floor((difference % (1000 * 60)) / 1000),
-                });
-            } else {
-                const elapsed = Math.abs(difference);
-                setTimeLeft({
-                    days: -Math.floor(elapsed / (1000 * 60 * 60 * 24)),
-                    hours: -Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                    minutes: -Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60)),
-                    seconds: -Math.floor((elapsed % (1000 * 60)) / 1000),
-                });
+        const updateCountdown = () => {
+            const now = Date.now();
+            const difference = Math.max(0, TARGET_DATE - now);
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            setTimeLeft({ days, hours, minutes, seconds });
+
+            // Stop the interval as soon as deadline is reached
+            if (difference === 0 && interval) {
+                clearInterval(interval);
+                interval = null;
             }
         };
 
         updateCountdown();
-        const interval = setInterval(updateCountdown, 1000);
-        return () => clearInterval(interval);
+
+        if (TARGET_DATE > Date.now()) {
+            interval = setInterval(updateCountdown, 1000);
+        }
+
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
     }, []);
 
     return (
-        <div className='w-full bg-black relative flex flex-col items-center justify-center antialiased py-24 px-4 overflow-hidden'>
+        <div className='w-full bg-black relative flex flex-col items-center justify-center antialiased pt-24 pb-8 sm:pb-12 md:pb-14 px-4 overflow-hidden'>
             {/* ── ORGANIC FLUID CONTOUR BACKGROUND ── */}
             <FluidContourBackground />
 
@@ -63,7 +69,7 @@ export default function HoverBorderGradientDemo() {
                         duration={1.5}
                     >
                         <span className='bg-clip-text text-transparent bg-gradient-to-b from-white via-neutral-100 to-neutral-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]'>
-                            RECRUITMENT OPEN
+                            UPCOMING EVENT
                         </span>
                     </HoverBorderGradient>
                 </div>
@@ -81,18 +87,18 @@ export default function HoverBorderGradientDemo() {
                         />
                     </div>
                     <h1 className='text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-neutral-100 tracking-wider font-sans text-center'>
-                        JUNIOR CORE FORMS OUT
+                        BENNETT’S GOT DATA
                     </h1>
                 </div>
 
                 {/* ── ITALIC QUOTED TAGLINE ── */}
                 <p className='text-neutral-300 italic font-poppins text-center text-sm sm:text-base md:text-xl max-w-3xl mx-auto mb-5 leading-relaxed px-2'>
-                    &quot;Ready to Build, Lead, and Innovate? Apply for the DSS Junior Core Team.&quot;
+                    &quot;Think. Predict. Present. Win.&quot;
                 </p>
 
                 {/* ── QUOTED DATE BADGE ── */}
                 <p className='text-neutral-100 font-bold text-center text-base sm:text-lg md:text-2xl mb-12 font-sans tracking-wide'>
-                    &quot;Deadline : 25th September 2026&quot;
+                    &quot;26 October 2026&quot;
                 </p>
 
                 {/* ── GLASSMORPHISM COUNTDOWN TIMER ── */}
@@ -100,7 +106,7 @@ export default function HoverBorderGradientDemo() {
                     {/* Days */}
                     <div className='flex flex-col items-center justify-center min-w-[76px] sm:min-w-[105px] md:min-w-[130px] p-4 sm:p-6 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:border-white/20 transition-all duration-300'>
                         <span className='text-3xl sm:text-5xl md:text-6xl font-extrabold text-white font-sans tracking-tight'>
-                            {timeLeft !== null ? timeLeft.days : '219'}
+                            {timeLeft !== null ? String(timeLeft.days).padStart(2, '0') : '00'}
                         </span>
                         <span className='text-xs sm:text-sm uppercase tracking-wider text-neutral-400 font-poppins font-medium mt-2'>
                             Days
@@ -110,7 +116,7 @@ export default function HoverBorderGradientDemo() {
                     {/* Hours */}
                     <div className='flex flex-col items-center justify-center min-w-[76px] sm:min-w-[105px] md:min-w-[130px] p-4 sm:p-6 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:border-white/20 transition-all duration-300'>
                         <span className='text-3xl sm:text-5xl md:text-6xl font-extrabold text-white font-sans tracking-tight'>
-                            {timeLeft !== null ? String(Math.abs(timeLeft.hours)).padStart(2, '0') : '15'}
+                            {timeLeft !== null ? String(timeLeft.hours).padStart(2, '0') : '00'}
                         </span>
                         <span className='text-xs sm:text-sm uppercase tracking-wider text-neutral-400 font-poppins font-medium mt-2'>
                             Hours
@@ -120,7 +126,7 @@ export default function HoverBorderGradientDemo() {
                     {/* Minutes */}
                     <div className='flex flex-col items-center justify-center min-w-[76px] sm:min-w-[105px] md:min-w-[130px] p-4 sm:p-6 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:border-white/20 transition-all duration-300'>
                         <span className='text-3xl sm:text-5xl md:text-6xl font-extrabold text-white font-sans tracking-tight'>
-                            {timeLeft !== null ? String(Math.abs(timeLeft.minutes)).padStart(2, '0') : '56'}
+                            {timeLeft !== null ? String(timeLeft.minutes).padStart(2, '0') : '00'}
                         </span>
                         <span className='text-xs sm:text-sm uppercase tracking-wider text-neutral-400 font-poppins font-medium mt-2'>
                             Minutes
@@ -130,7 +136,7 @@ export default function HoverBorderGradientDemo() {
                     {/* Seconds */}
                     <div className='flex flex-col items-center justify-center min-w-[76px] sm:min-w-[105px] md:min-w-[130px] p-4 sm:p-6 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:border-white/20 transition-all duration-300'>
                         <span className='text-3xl sm:text-5xl md:text-6xl font-extrabold text-white font-sans tracking-tight'>
-                            {timeLeft !== null ? String(Math.abs(timeLeft.seconds)).padStart(2, '0') : '48'}
+                            {timeLeft !== null ? String(timeLeft.seconds).padStart(2, '0') : '00'}
                         </span>
                         <span className='text-xs sm:text-sm uppercase tracking-wider text-neutral-400 font-poppins font-medium mt-2'>
                             Seconds
@@ -138,50 +144,13 @@ export default function HoverBorderGradientDemo() {
                     </div>
                 </div>
 
-                {/* ── EVENT DESCRIPTION & REGISTER CTA ── */}
-                <div className='max-w-3xl mx-auto text-center mb-16'>
-                    <p className='text-neutral-400 text-sm sm:text-base md:text-lg leading-relaxed mb-8 font-poppins'>
-                        Applications for the DSS Junior Core Team are now open! This is your opportunity to organize events, contribute to technical initiatives, collaborate with passionate peers, and play an active role in growing the Data Science Society. Join us and be part of the team driving innovation at DSS.
+                {/* ── EVENT DESCRIPTION ── */}
+                <div className='max-w-3xl mx-auto text-center'>
+                    <p className='text-neutral-400 text-sm sm:text-base md:text-lg leading-relaxed font-poppins'>
+                        Bennett&apos;s Got Data is a competitive campus Ideathon where innovation meets strategy. Participants will develop and present ideas before a panel of judges, while predicting and locking in the score they believe their idea will receive. Once the judges reveal their final scores, participants&apos; predictions will be compared with the actual results. An exact match creates the signature DSS Wala Latent winning moment! The event combines creative problem-solving, strategic thinking, presentation skills, and audience engagement in a unique and exciting competition.
                     </p>
-
-                    <div className='flex justify-center text-center'>
-                        <a
-                            href='https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=9NpbLPKP2Uu9VHxQqyGVkPRDgAMwYExAssH82f4j-49UNkJCUlI4TVg2WlJRSTFMMlZYTTBFWU43WS4u'
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <HoverBorderGradient
-                                containerClassName='rounded-full'
-                                className='dark:bg-black bg-white text-black dark:text-white flex cursor-pointer items-center space-x-2 px-6 py-2.5 text-base font-semibold'
-                            >
-                                <AceternityLogo />
-                                <span>Apply Now</span>
-                            </HoverBorderGradient>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
     );
 }
-
-const AceternityLogo = () => {
-    return (
-        <svg
-            width='66'
-            height='65'
-            viewBox='0 0 66 65'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-            className='h-4 w-4 text-black dark:text-white'
-        >
-            <path
-                d='M8 8.05571C8 8.05571 54.9009 18.1782 57.8687 30.062C60.8365 41.9458 9.05432 57.4696 9.05432 57.4696'
-                stroke='currentColor'
-                strokeWidth='15'
-                strokeMiterlimit='3.86874'
-                strokeLinecap='round'
-            />
-        </svg>
-    );
-};
